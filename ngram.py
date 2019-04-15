@@ -74,11 +74,6 @@ class NgramModel(object):
         else:
             total = sum(probs[context].values()) + self.k * len(self.vocab)
             return (probs[context].get(char, 0) + self.k) / total
-            # if char not in probs[context]:
-            #     return 0
-            # else:
-            #     total = sum(probs[context].values())
-            #     return probs[context][char] / total
 
     def random_char(self, context):
         ''' Returns a random character based on the given context and the
@@ -169,6 +164,6 @@ class NgramModelWithInterpolation(NgramModel):
 ################################################################################
 
 if __name__ == '__main__':
-    m = create_ngram_model(NgramModel, 'speeches.txt', 4)
+    m = create_ngram_model(NgramModel, 'poems.txt', 4)
     print(m.random_text(200))
 	#     print(m.perplexity(f.read()))
