@@ -164,6 +164,6 @@ class NgramModelWithInterpolation(NgramModel):
 ################################################################################
 
 if __name__ == '__main__':
-    m = create_ngram_model(NgramModel, 'poems.txt', 4)
+    m = create_ngram_model(NgramModel, 'data/poems.txt', 4)
     print(m.random_text(200))
 	#     print(m.perplexity(f.read()))
