@@ -1,0 +1,1 @@
+You should upload simple-baseline.py and describe it in simple-baseline.md. Your simple-baseline.md should say what score your evaluation metric gives to the simple baseline for your test set.
