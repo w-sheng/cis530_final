@@ -115,7 +115,7 @@ class NgramModel(object):
 
     def is_iambic_pentameter(self, text):
         ''' Returns if given text is iambic pentameter '''
-        return (1 if random.random() < 0.5 else 0)
+        return (random.random() < 0.5)
 
     def write_poem(self, output_path):
         fout = open(output_path, 'w+')
