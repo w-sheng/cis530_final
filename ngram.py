@@ -104,12 +104,12 @@ class NgramModel(object):
         log_sum = 0
         context = '~' * self.n
         for i in range(N):
-        	prob = self.prob(context, text[i])
-        	if (prob == 0):
-        		return float('inf')
-        	log_sum += math.log(prob)
+            prob = self.prob(context, text[i])
+            if (prob == 0):
+                return float('inf')
+            log_sum += math.log(prob)
 
-        	context = context[1:] + text[i]
+            context = context[1:] + text[i]
 
         return math.exp((-1/N) * log_sum)
 
