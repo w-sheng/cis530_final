@@ -18,20 +18,10 @@ def ngrams(n, text):
     return ngrams
 
 def create_ngram_model(model_class, path, n=2, k=0):
-    ''' Creates and returns a new n-gram model trained on the city names
-        found in the path file '''
+    ''' Creates and returns a new n-gram model trained on poem in file '''
     model = model_class(n, k)
     with open(path, encoding='utf-8', errors='ignore') as f:
         model.update(f.read())
-    return model
-
-def create_ngram_model_lines(model_class, path, n=2, k=0):
-    ''' Creates and returns a new n-gram model trained on the city names
-        found in the path file '''
-    model = model_class(n, k)
-    with open(path, encoding='utf-8', errors='ignore') as f:
-        for line in f:
-            model.update(line.strip())
     return model
 
 ################################################################################

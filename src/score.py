@@ -63,7 +63,7 @@ def load_file(input):
     with open(input, 'rt', encoding="utf8") as f:
         for line in f:
             line_split = line.split("\t")
-            lines.append(line_split[0].lower())
+            lines.append(line_split[0])
             labels.append(int(line_split[1]))
 
     return lines, labels
@@ -72,18 +72,18 @@ def load_file(input):
 # Main
 ################################################################################
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        sys.exit("Usage: python score.py [n for ngram] [training input file] \
-            [perplexity input file] [classification input file]")
+    if len(sys.argv) != 5:
+        sys.exit("Usage: python src/score.py [n for ngram] [training input file] [perplexity input file] [classification input file]")
 
     ngram_n = int(sys.argv[1])
     training_input_file = sys.argv[2]
     perp_input_file = sys.argv[3]
     class_input_file = sys.argv[4]
 
+    (class_lines, class_gold) = load_file(class_input_file)
+
     model = simple_baseline.create_ngram_model(simple_baseline.NgramModel, training_input_file, ngram_n)
     model.write_poem('data/output.txt')
-    (class_lines, class_gold) = load_file(class_input_file)
 
     compute_perplexity(model, perp_input_file)
     compute_meter_accuracy(model, class_lines, class_gold)
