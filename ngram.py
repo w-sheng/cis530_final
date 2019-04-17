@@ -104,12 +104,12 @@ class NgramModel(object):
         log_sum = 0
         context = '~' * self.n
         for i in range(N):
-        	prob = self.prob(context, text[i])
-        	if (prob == 0):
-        		return float('inf')
-        	log_sum += math.log(prob)
+            prob = self.prob(context, text[i])
+            if (prob == 0):
+                return float('inf')
+            log_sum += math.log(prob)
 
-        	context = context[1:] + text[i]
+            context = context[1:] + text[i]
 
         return math.exp((-1/N) * log_sum)
 
@@ -168,6 +168,6 @@ class NgramModelWithInterpolation(NgramModel):
 ################################################################################
 
 if __name__ == '__main__':
-    m = create_ngram_model(NgramModel, 'poems.txt', 4)
+    m = create_ngram_model(NgramModel, 'data/poems.txt', 4)
     print(m.random_text(200))
 	#     print(m.perplexity(f.read()))
