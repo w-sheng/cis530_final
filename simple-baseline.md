@@ -12,7 +12,7 @@ We are attempting to generate poetry to fit a certain meter and rhyme scheme, so
 
 We hope to expand our model to a word-based model (compared to just a character-based one) and to involve neural networks as well to contrast their performance.
 
-**TODO:** Our simple baseline attained a score/perplexity of ????? when run through our evaluation script.
+Our simple baseline attained a perplexity of 4.614 when run through our evaluation script on `perp_poem.txt` in `/data`.
 
 ### Meter Classification
 
@@ -20,4 +20,4 @@ For this milestone, we only focused on classifying whether a line of a poem is i
 
 In the near future, we aim to use the words in the CMU dictionary classified into phonemes and stresses to aid us in classifying a meter. We wish to expand beyond just iambic pentameter to include iambic trimeter and ballad meter as well.
 
-**TODO:** Our simple baseline attained an f-score of ????? when run through our evaluation script.
+**TODO:** Our simple baseline attained an f-score of 0.429 when run through our evaluation script on our sample poem for classification `class_poem.txt` in `/data`.
