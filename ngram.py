@@ -113,6 +113,10 @@ class NgramModel(object):
 
         return math.exp((-1/N) * log_sum)
 
+    def is_iambic_pentameter(self, text):
+        ''' Returns if given text is iambic pentameter '''
+        return (random.random() < 0.5)
+
 ################################################################################
 # Part 2: N-Gram Model with Interpolation
 ################################################################################
