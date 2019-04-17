@@ -18,4 +18,6 @@ We hope to expand our model to a word-based model (compared to just a character-
 
 For this milestone, we only focused on classifying whether a line of a poem is in iambic pentameter. Our baseline for this is even more basic than our baseline for the previous task. We randomly output 1 or 0 where 1 means it is in iambic and 0 means it is not. 
 
+In the near future, we aim to use the words in the CMU dictionary classified into phonemes and stresses to aid us in classifying a meter. We wish to expand beyond just iambic pentameter to include iambic trimeter and ballad meter as well.
+
 **TODO:** Our simple baseline attained an f-score of ????? when run through our evaluation script.
