@@ -23,8 +23,8 @@ with open(hymns_file, 'w') as file:
                 if poem and len(poem) > 3:
                     file.write(url)
                     # file.write(''.join(map(lambda x : str(x), poem)))
-                    file.write(poem)
-                    file.flush()
+                    file.write(poem + '\n')
+                    print(url)
                     break
         except:
             continue 
