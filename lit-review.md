@@ -10,7 +10,7 @@ Marjan Ghazvininejad, Xing Shi, Jay Priyadarshi, and Kevin Knight. Hafez: an Int
 
 Hisar Manurung, Graeme Ritchie, and Henry Thompson. Towards A Computational Model Of Poetry Generation. *Division of Informatics, University of Edinburgh* (2000), 10 pages.
 
-## Summaries
+## Summaries 
 
 ### Generating Topical Poetry
 
