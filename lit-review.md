@@ -36,5 +36,8 @@ The paper discusses the use of Lexicalized Tree Adjoining Grammar (LTAG) to gene
 
 The authors used LTAGs to repeatedly evaluate sentences in poetry and mutate them to produce new sentences. A Tree Adjoining Grammar uses a meta-data structure called a derivation tree, in which operations that are performed on elementary trees are stored. This allows sentence structures to be adjoined or deleted, while keeping track of the operations performed on the sentence. The two operations implemented in the paper are referred to as semantic realization and semantic paraphrasing.
 
-## Published Baseline
-TODO
+## Published Baseline Implementation
+
+The research papers do not use baselines, so we decided to create a simplified version of the Hafez model instead. To recap, the Hafez model uses a [third-party finite state acceptor (FSA)](https://github.com/Marjan-GH/Topical_poetry), which is used to generate series of words that rhyme properly and have the correct meter for the type of poem being created. Then, another model is used to analyze those series of words and determine which ones actually make semantic sense and thus count as a poem. The Hafez researchers tried using a recurrent neural network and an encoder-decoder for this second model. 
+
+We used the same FSA codebase used by the Hafez researchers and implemented a model that would use the FSA to generate poems. We created a RNN based on the [official Pytorch repository’s word language model example](https://github.com/pytorch/examples/tree/master/word_language_model) and used LSTM and beam search. For data, we extracted eight thousand hymns from online and trained the RNN on that data.
