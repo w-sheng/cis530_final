@@ -23,7 +23,7 @@ parser.add_argument('--data', type=str, default='./data/sonnets',
                     help='location of the data corpus')
 parser.add_argument('--batch_size', type=int, default=20,
                     help='batch size')
-parser.add_argument('--bptt', type=int, default=35,
+parser.add_argument('--bptt', type=int, default=30,
                     help='sequence length')
 parser.add_argument('--emsize', type=int, default=200,
                     help='size of word embeddings')
@@ -35,7 +35,7 @@ parser.add_argument('--lr', type=float, default=20,
                     help='initial learning rate')
 parser.add_argument('--clip', type=float, default=0.25,
                     help='gradient clipping')
-parser.add_argument('--epochs', type=int, default=40,
+parser.add_argument('--epochs', type=int, default=80,
                     help='upper epoch limit')
 parser.add_argument('--log-interval', type=int, default=200, metavar='N',
                     help='report interval')
@@ -43,6 +43,9 @@ parser.add_argument('--dropout', type=float, default=0.2,
                     help='dropout applied to layers (0 = no dropout)')
 parser.add_argument('--save', type=str, default='model.pt',
                     help='path to save the final model')
+parser.add_argument('--onnx-export', type=str, default='',
+                    help='path to export the final model in onnx format')
+
 args = parser.parse_args()
 
 ##############################################################################################
@@ -108,7 +111,12 @@ def train(model, corpus, train_data, criterion, lr, epoch):
     hidden = model.init_hidden(args.batch_size)
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         # standard training process
+        # print(len(train_data))
+        # print(i)
         data, targets = get_batch(train_data, i)
+        # print(data)
+        # print(targets)
+        # print("\n\n")
         hidden = repackage_hidden(hidden)
         model.zero_grad()
         output, hidden = model(data, hidden)
@@ -159,6 +167,7 @@ def main(args):
     # split into batches
     eval_batch_size = 10
     train_data = batchify(corpus.train, args.batch_size, device)
+    print(len(train_data.data.numpy()))
     val_data = batchify(corpus.valid, eval_batch_size, device)
     test_data = batchify(corpus.test, eval_batch_size, device)
 
