@@ -160,14 +160,14 @@ def main(args):
 
     # obtain corpus
     corpus = utility.Corpus(args.data)
-    print(len(corpus.train.data.numpy()))
-    print(corpus.train.data.numpy()[0:100])
+    # print(len(corpus.train.data.numpy()))
+    # print(corpus.train.data.numpy()[0:100])
     print(corpus.dictionary.word2idx['<eos>'])
 
     # split into batches
     eval_batch_size = 10
     train_data = batchify(corpus.train, args.batch_size, device)
-    print(len(train_data.data.numpy()))
+    # print(len(train_data.data.numpy()))
     val_data = batchify(corpus.valid, eval_batch_size, device)
     test_data = batchify(corpus.test, eval_batch_size, device)
 
@@ -193,7 +193,7 @@ def main(args):
                 torch.save(model, f)
             best_val_loss = val_loss
         else:
-            lr /= 4.0
+            lr *= 3.0/4.0
 
     with open(args.save, 'rb') as f:
         model = torch.load(f)
