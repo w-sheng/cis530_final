@@ -2,7 +2,7 @@
 
 import argparse
 import torch
-import utility
+import RNN.utility
 
 parser = argparse.ArgumentParser(description='PyTorch sonnets Language Model')
 
@@ -40,22 +40,31 @@ with open(args.checkpoint, 'rb') as f:
     model = torch.load(f).to(device)
 model.eval()
 
-corpus = utility.Corpus(args.data)
+corpus = RNN.utility.Corpus(args.data)
 ntokens = len(corpus.dictionary)
 hidden = model.init_hidden(1)
+input_histories = RNN.utility.input_dict(5)
 input = torch.randint(ntokens, (1, 1), dtype=torch.long).to(device)
+input_histories.add(input.data.clone())
 
 with open(args.outf, 'w') as outf:
-    with torch.no_grad():  # no tracking history
-        for i in range(args.words):
-            output, hidden = model(input, hidden)
-            word_weights = output.squeeze().div(args.temperature).exp().cpu()
-            word_idx = torch.multinomial(word_weights, 1)[0]
-            input.fill_(word_idx)
-            word = corpus.dictionary.idx2word[word_idx]
+    with open('options.txt', 'w') as tmpf:
+        with torch.no_grad():  # no tracking history
+            for i in range(args.words):
+                output, hidden = model(input, hidden)
+                word_weights = output.squeeze().div(args.temperature).exp().cpu()
+                words_idx = torch.multinomial(word_weights, 10)
+                input.fill_(words_idx[0])
+                input_histories.add(input.data.clone())
+                words_tmp = []
 
-            outf.write(word + ('\n' if i % 20 == 19 else ' '))
+                for idx in words_idx:
+                    words_tmp.append(corpus.dictionary.idx2word[idx])
+                tmpf.write(str(words_tmp) + '\n')
+                outf.write(words_tmp[0] + ('\n' if i % 20 == 19 else ' '))
 
-            if i % args.log_interval == 0:
-                print('| Generated {}/{} words'.format(i, args.words))
+                if i % args.log_interval == 0:
+                    input_histories.print()
+                    print('| Generated {}/{} words'.format(i, args.words))
 
+print('DONE')

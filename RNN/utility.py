@@ -81,3 +81,30 @@ class Corpus(object):
                         token += 1
         return ids
 
+# just realized this is a fucking stack
+class input_dict(object):
+    def __init__(self, max):
+        self.dict = []
+        self.length = 0
+        self.max = max
+
+    def __len__(self):
+        return self.length
+
+    def add(self, tensor):
+        if self.length == self.max:
+            self.dict = self.dict[1:]
+            self.length -= 1
+        self.dict.append(tensor)
+        self.length += 1
+
+    def pop(self):
+        tmp = self.dict[0]
+        self.dict = self.dict[1:]
+        self.length -= 1
+        return tmp
+
+    def print(self):
+        for entry in self.dict:
+            print(entry)
+
