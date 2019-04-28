@@ -11,6 +11,7 @@ class SonnetFSA(object):
         self.rhyme_scheme = {2:{0},3:{1},6:{4},7:{5},10:{8},11:{9},13:{12}} # dictionary mapping line to set of previous lines that must rhyme with it
         self.sonnet_words = []
 
+    # Given a lower case word, returns true if the word fits in terms of syllable count and rhyme scheme
     def accepts(self, next_word):
         if self.line_number >= len(self.syllables_per_line):
             return False
@@ -31,12 +32,14 @@ class SonnetFSA(object):
             self.sonnet_words.append(next_word)
         return True
 
+    # Resets to starting state of the FSA - use this method if you're feeding in a new sonnet
     def reset(self):
         self.rhyme_words = {}
         self.syllable_count = 0
         self.line_number = 0
         self.sonnet_words = []
 
+# Example usage
 sonnetFSA = SonnetFSA(readCMU.CMUDict("../data/cmudict.txt"))
 fin = open('../data/easy_sonnet.txt', 'r', errors='ignore')
 line = fin.readline()
