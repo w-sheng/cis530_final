@@ -61,7 +61,8 @@ class Corpus(object):
                     words = line.split() + ['<eos>']
                     tokens += len(words)
                     for word in words:
-                        word = re.sub(r'[^\w\s]', '', word)
+                        # if word != '<eos>':
+                        #     word = re.sub(r'[^\w\s]', '', word)
                         self.dictionary.add_word(word)
             print(path)
             print(tokens)
@@ -92,7 +93,8 @@ class Corpus(object):
                 elif self.flag == "nopadding":
                     words = line.split() + ['<eos>']
                     for word in words:
-                        word = re.sub(r'[^\w\s]', '', word)
+                        # if word != '<eos>':
+                        #     word = re.sub(r'[^\w\s]', '', word)
                         ids[token] = self.dictionary.word2idx[word]
                         token += 1
         return ids
