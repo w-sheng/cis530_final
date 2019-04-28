@@ -47,6 +47,7 @@ input_histories = RNN.utility.input_dict(5)
 input = torch.randint(ntokens, (1, 1), dtype=torch.long).to(device)
 input_histories.add(input.data.clone())
 
+
 with open(args.outf, 'w') as outf:
     with open('options.txt', 'w') as tmpf:
         with torch.no_grad():  # no tracking history

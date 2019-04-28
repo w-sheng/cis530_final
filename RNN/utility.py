@@ -25,7 +25,8 @@ class Dictionary(object):
 
 
 class Corpus(object):
-    def __init__(self, path):
+    def __init__(self, path, flag):
+        self.flag = flag
         self.dictionary = Dictionary()
         self.sonnet_train = self.tokenize(os.path.join(path, 'sonnets_train.txt'))
         self.valid = self.tokenize(os.path.join(path, 'sonnets_dev.txt'))
@@ -41,22 +42,29 @@ class Corpus(object):
             tokens = 0
             for line in f:
                 line = line.split('\t')[0]
-                words = line.split() + ['<eos>']
-                if len(words) > 14 or len(words) < 7:
-                    pass
-                else:
-                    while len(words) < 14:
-                        words.append('<blank>')
-                    words.append('<eol>')
-                    if len(words) > longest_sentence:
-                        longest_sentence = len(words)
+                if self.flag == "padding":
+                    words = line.split() + ['<eos>']
+                    if len(words) > 14 or len(words) < 7:
+                        pass
+                    else:
+                        while len(words) < 14:
+                            words.append('<blank>')
+                        words.append('<eol>')
+                        if len(words) > longest_sentence:
+                            longest_sentence = len(words)
+                        tokens += len(words)
+                        for word in words:
+                            if not word in ['<eos>', '<blank>', '<eol>']:
+                                word = re.sub(r'[^\w\s]', '', word)
+                            self.dictionary.add_word(word)
+                elif self.flag == "nopadding":
+                    words = line.split() + ['<eos>']
                     tokens += len(words)
                     for word in words:
-                        if not word in ['<eos>', '<blank>', '<eol>']:
-                            word = re.sub(r'[^\w\s]', '', word)
                         self.dictionary.add_word(word)
+            print(path)
             print(tokens)
-            print("sentence max: " + str(longest_sentence))
+            # print("sentence max: " + str(longest_sentence))
 
         # Tokenize file content
         with open(path, 'r', encoding="utf8") as f:
@@ -64,19 +72,25 @@ class Corpus(object):
             token = 0
             for line in f:
                 line = line.split('\t')[0]
-                words = line.split() + ['<eos>']
-                if len(words) > 14 or len(words) < 7:
-                    pass
-                else:
-                    while len(words) < 14:
-                        words.append('<blank>')
-                    words.append('<eol>')
-                    if len(words) > longest_sentence:
-                        longest_sentence = len(words)
-                    tokens += len(words)
+                if self.flag == "padding":
+                    words = line.split() + ['<eos>']
+                    if len(words) > 14 or len(words) < 7:
+                        pass
+                    else:
+                        while len(words) < 14:
+                            words.append('<blank>')
+                        words.append('<eol>')
+                        if len(words) > longest_sentence:
+                            longest_sentence = len(words)
+                        tokens += len(words)
+                        for word in words:
+                            if not word in ['<eos>', '<blank>', '<eol>']:
+                                word = re.sub(r'[^\w\s]', '', word)
+                            ids[token] = self.dictionary.word2idx[word]
+                            token += 1
+                elif self.flag == "nopadding":
+                    words = line.split() + ['<eos>']
                     for word in words:
-                        if not word in ['<eos>', '<blank>', '<eol>']:
-                            word = re.sub(r'[^\w\s]', '', word)
                         ids[token] = self.dictionary.word2idx[word]
                         token += 1
         return ids

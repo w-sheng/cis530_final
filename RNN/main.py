@@ -21,7 +21,7 @@ parser.add_argument('--cuda', action='store_true',
                     help='use CUDA')
 parser.add_argument('--data', type=str, default='./data/sonnets',
                     help='location of the data corpus')
-parser.add_argument('--batch_size', type=int, default=20,
+parser.add_argument('--batch_size', type=int, default=60,
                     help='batch size')
 parser.add_argument('--bptt', type=int, default=30,
                     help='sequence length')
@@ -37,7 +37,7 @@ parser.add_argument('--clip', type=float, default=0.25,
                     help='gradient clipping')
 parser.add_argument('--epochs', type=int, default=80,
                     help='upper epoch limit')
-parser.add_argument('--log-interval', type=int, default=200, metavar='N',
+parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval')
 parser.add_argument('--dropout', type=float, default=0.2,
                     help='dropout applied to layers (0 = no dropout)')
@@ -159,10 +159,12 @@ def main(args):
     device = torch.device("cuda" if args.cuda else "cpu")
 
     # obtain corpus
-    corpus = utility.Corpus(args.data)
+    corpus = utility.Corpus(args.data, "nopadding")
     # print(len(corpus.train.data.numpy()))
     # print(corpus.train.data.numpy()[0:100])
-    print(corpus.dictionary.word2idx['<eos>'])
+    # print(corpus.dictionary.word2idx['<eos>'])
+    print("corpus set")
+    print(corpus.flag)
 
     # split into batches
     eval_batch_size = 10
@@ -179,10 +181,15 @@ def main(args):
     # loop for epoch
     best_val_loss = None
     lr = args.lr
+    print("entering the training loop")
     for epoch in range(1, args.epochs + 1):
+        print(1)
         epoch_start_time = time.time()
+        print(2)
         train(model, corpus, train_data, criterion, lr, epoch)
+        print(3)
         val_loss = evaluate(val_data, model, corpus, criterion, eval_batch_size)
+        print(4)
         print('-' * 89)
         print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
               'valid ppl {:8.2f}'.format(epoch, (time.time() - epoch_start_time),
