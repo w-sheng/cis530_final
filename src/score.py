@@ -1,4 +1,5 @@
-import math, sys, simple_baseline
+import math, sys, simple_baseline, readCMU
+from nltk.tokenize import word_tokenize
 
 ################################################################################
 # Computing Perplexity of Generated Poetry
@@ -46,11 +47,38 @@ def get_fscore(y_pred, y_true):
 
     return fscore
 
-def compute_meter_accuracy(model, lines, gold):
+# gold = list of 0's and 1's which indicate the target meter; for the time being this is ignored and we use the iambic array instead
+# this function is broken because word rhythem depends on the context
+def compute_meter_accuracy(model, lines, gold, CMUdict):
     pred = []
     for l in lines:
-        pred.append(model.is_iambic_pentameter(l))
+        index = 0
+        words = [word.lower() for word in word_tokenize(l) if word.isalpha()]
+        is_iambic = True
+        # check if this line is in iambic pentameter, 1 if yes else 0
+        for word in words:
+            word_stress = CMUdict.get_stresses(word)
+            if len(word_stress) == 0:
+                print(word + " is not in dictionary")
+                pred.append(0)
+                is_iambic = False
+                break
+            if index + len(word_stress) > len(gold):
+                pred.append(0)
+                print('too big' + words)
+                is_iambic = False
+                break
+            if word_stress == gold[index:index + len(word_stress)]:
+                index += len(word_stress)
+            else:
+                pred.append(0)
+                print(word + ' makes it not iambic')
+                is_iambic = False
+                break
+        if is_iambic:
+            pred.append(1)
 
+    print(pred)
     print('\nF-Score:')
     print(get_fscore(pred, gold))
 
@@ -63,8 +91,9 @@ def load_file(input):
     with open(input, 'rt', encoding="utf8") as f:
         for line in f:
             line_split = line.split("\t")
-            lines.append(line_split[0])
-            labels.append(int(line_split[1]))
+            if len(line_split) > 1:
+                lines.append(line_split[0])
+                labels.append(int(line_split[1]))
 
     return lines, labels
 
@@ -83,7 +112,10 @@ if __name__ == "__main__":
     (class_lines, class_gold) = load_file(class_input_file)
 
     model = simple_baseline.create_ngram_model(simple_baseline.NgramModel, training_input_file, ngram_n)
-    model.write_poem('data/output.txt')
+    # model.write_poem('data/output.txt')
 
     compute_perplexity(model, perp_input_file)
-    compute_meter_accuracy(model, class_lines, class_gold)
+    iambic = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1] * 14
+    with open("../data/meter_accuracy_test_sonnet.txt", 'r') as f:
+        single_iambic_sonnet = [line.strip() for line in f]
+    compute_meter_accuracy(model, single_iambic_sonnet, iambic, readCMU.CMUDict("../data/cmudict.txt"))

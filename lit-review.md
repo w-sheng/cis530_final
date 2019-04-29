@@ -10,7 +10,7 @@ Marjan Ghazvininejad, Xing Shi, Jay Priyadarshi, and Kevin Knight. Hafez: an Int
 
 Hisar Manurung, Graeme Ritchie, and Henry Thompson. Towards A Computational Model Of Poetry Generation. *Division of Informatics, University of Edinburgh* (2000), 10 pages.
 
-## Summaries
+## Summaries 
 
 ### Generating Topical Poetry
 
@@ -36,5 +36,8 @@ The paper discusses the use of Lexicalized Tree Adjoining Grammar (LTAG) to gene
 
 The authors used LTAGs to repeatedly evaluate sentences in poetry and mutate them to produce new sentences. A Tree Adjoining Grammar uses a meta-data structure called a derivation tree, in which operations that are performed on elementary trees are stored. This allows sentence structures to be adjoined or deleted, while keeping track of the operations performed on the sentence. The two operations implemented in the paper are referred to as semantic realization and semantic paraphrasing.
 
-## Published Baseline
-TODO
+## Published Baseline Implementation
+
+The research papers do not use baselines, so we decided to create a simplified version of the Hafez model instead. To recap, the Hafez model uses a [third-party finite state acceptor (FSA)](https://github.com/Marjan-GH/Topical_poetry), which is used to generate series of words that rhyme properly and have the correct meter for the type of poem being created. Then, another model is used to analyze those series of words and determine which ones actually make semantic sense and thus count as a poem. The Hafez researchers tried using a recurrent neural network and an encoder-decoder for this second model. 
+
+We used the same FSA codebase used by the Hafez researchers and tried to implement a model that would use the FSA to generate poems. However, because of difficulties with trying to integrate the model with the FSA, we ended up creating a standalone RNN. It is based on the [official Pytorch repository’s word language model example](https://github.com/pytorch/examples/tree/master/word_language_model), and we used a LSTM with a dropout rate of 0.2, batch size of 20, 2 layers, and 80 epochs. We extracted eight thousand hymns from online and trained the RNN on that data, then generated new poems. However, without a FSA to help the LSTM determine the correct meter and rhyme structure, the LSTM did a poor job of creating proper poems.
