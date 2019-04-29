@@ -60,7 +60,7 @@ class CMUDict(object):
     # Returns a list representing the stressed and unstressed syllables of the given word, where 0 = unstressed and 1 = stressed
     # Returns an empty list if word is not in dictionary
     def get_stresses(self, word):
-        return self.stresses[word] if word in self.pronunciations else []
+        return self.stresses[word] if word in self.pronunciations else [0 if (i % 2 == 0) else 1 for i in range(int(len(word)/3))]
 
 cmudict = CMUDict("../data/cmudict.txt")
 # print(cmudict.get_pronunciation('abate'))
@@ -74,4 +74,4 @@ cmudict = CMUDict("../data/cmudict.txt")
 # print(cmudict.is_rhyme_words('flight', 'knight'))
 # print(cmudict.is_rhyme_words('shooting', 'dying'))
 # print(cmudict.is_rhyme_words('debate', 'cremate'))
-# print(cmudict.is_rhyme_words('rhyme', 'great'))
+
