@@ -6,8 +6,8 @@ use the beautiful soup library to aggregate all the actual hymn lyrics into one 
 from urllib.request import Request, urlopen
 from bs4 import BeautifulSoup
 
-hymn_links_file = 'hymn_links3.txt'
-hymns_file = 'hymns3.txt'
+hymn_links_file = 'hymn_links.txt'
+hymns_file = 'hymns.txt'
 
 with open(hymns_file, 'w') as file:
     for url in open(hymn_links_file, 'r'):
