@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description='PyTorch sonnets Language Model')
 # Model parameters.
 parser.add_argument('--data', type=str, default='../data',
                     help='location of the data corpus')
-parser.add_argument('--checkpoint', type=str, default='../src/models/model_ep80_nopad_comma.pt',
+parser.add_argument('--checkpoint', type=str, default='../src/models/metrolyrics_model.pt',
                     help='model checkpoint to use')
 parser.add_argument('--outf', type=str, default='generated.txt',
                     help='output file for generated text')
