@@ -39,7 +39,7 @@ parser.add_argument('--epochs', type=int, default=80,
                     help='upper epoch limit')
 parser.add_argument('--log-interval', type=int, default=100, metavar='N',
                     help='report interval')
-parser.add_argument('--dropout', type=float, default=0.2,
+parser.add_argument('--dropout', type=float, default=0.3,
                     help='dropout applied to layers (0 = no dropout)')
 parser.add_argument('--save', type=str, default='model.pt',
                     help='path to save the final model')

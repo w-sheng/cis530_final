@@ -28,11 +28,11 @@ class Corpus(object):
     def __init__(self, path, flag):
         self.flag = flag
         self.dictionary = Dictionary()
-        self.sonnet_train = self.tokenize(os.path.join(path, 'poem_generation_data/sonnets_train.txt'))
+        self.sonnet_train = self.tokenize(os.path.join(path, 'poem_generation_data/sonnets_train_rev.txt'))
         self.valid = self.tokenize(os.path.join(path, 'poem_generation_data/sonnets_dev.txt'))
         self.test = self.tokenize(os.path.join(path, 'poem_generation_data/sonnets_test.txt'))
-        self.hymns = self.tokenize(os.path.join(path, 'hymns/hymns_no_urls.txt'))
-        self.songs = self.tokenize(os.path.join(path, 'lyrics.txt'))
+        self.hymns = self.tokenize(os.path.join(path, 'hymns/hymns_no_urls_rev.txt'))
+        self.songs = self.tokenize(os.path.join(path, 'lyrics_rev_v2.txt'))
         self.train = torch.cat((self.sonnet_train, self.hymns, self.songs), 0)
 
     def tokenize(self, path):
